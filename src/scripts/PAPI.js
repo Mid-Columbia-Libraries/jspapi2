@@ -171,7 +171,6 @@ export default class PAPI {
    *
    * @param {string} barcode
    * @param {string} password
-   *
    * @returns {promise}
    *
    * @example myPapi.authenticatePatron('1234567890', 'patron-password')
@@ -193,7 +192,6 @@ export default class PAPI {
    * @param {string} user - your staff user's username
    * @param {string} pass - your staff user's password
    * @param {string} [domain=config.domain] - hint:domain is listed when signing into polaris staff client
-   *
    * @returns {promise}
    *
    * @example myPapi.authenticateStaff('vance', 'my-password')
@@ -213,7 +211,6 @@ export default class PAPI {
    * Simple request to get a bib record by ID (Control Number)
    *
    * @param {integer} id - The bibligraphic ID you want to load
-   *
    * @returns {promise}
    *
    * @example
@@ -234,7 +231,6 @@ export default class PAPI {
    * @param {int|string} per      - number of results per page
    * @param {string|array} [limit]
    * @param {string|array} [ccl]
-   * 
    * @returns {promise}
    * 
    * @example api.bibSearch('KW=dogs')
@@ -273,7 +269,6 @@ export default class PAPI {
    * @param {string} kw       - KW|TI|AU|SU|NOTE|PUB|GENRE|SE|ISBN|ISSN|LCCN|PN|LC|DD|LOCAL|SUDOC|CODEN|STRN|CN|BC
    * @param {int|string} page - the search result page to return
    * @param {int|string} per  - number of results per page
-   * 
    * @returns {promise}
    * 
    * @example
@@ -285,5 +280,20 @@ export default class PAPI {
 
   bibSearchKW(search, kw = 'KW', page = 1, per = 10) {
       return this.call(`search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${per}`);
+  }
+  
+/**
+ * Returns the limit filters that this Polaris API understands
+ * Note: this method does not generally return all possible filters
+ *
+ * @returns {promise}
+ * @example 
+ * api.limitFiltersGet()
+ *   .then((response) => {
+ *     console.log(response.data);
+ *   });
+ */
+  limitFiltersGet() {
+    return this.call('limitfilters');
   }
 }
