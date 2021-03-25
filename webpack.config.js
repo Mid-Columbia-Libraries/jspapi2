@@ -1,5 +1,4 @@
 const path = require('path');
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 module.exports = {
   entry: './src/scripts/PAPI.js',
@@ -8,7 +7,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
-    new NodePolyfillPlugin(),
+    nodeResolve({
+      jsnext: true
+    }),
   ],
   resolve: {
     fallback: { crypto: require.resolve('crypto-browserify') },

@@ -1,12 +1,15 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   input: 'src/scripts/PAPI.js',
   output: {
+    name: 'jsPAPI',
     dir: 'dist',
-    format: 'iife',
+    format: 'umd',
   },
   plugins: [
-    nodeResolve(),
+    nodeResolve({ jsnext: true, preferBuiltins: true, browser: true }),
+    commonjs(),
   ],
 };

@@ -1,6 +1,5 @@
-import HmacSHA1 from 'crypto-js/hmac-sha1.js';
-import Base64 from 'crypto-js/enc-base64.js';
 import axios from 'axios';
+import HmacSHA1 from './libs/hmac-sha1.js';
 
 export default class PAPI {
   constructor(config) {
@@ -56,8 +55,14 @@ export default class PAPI {
   buildSignature(method, url, pass = '') {
     const date = PAPI.polarisDate();
     const sig = method + url + date + pass;
+    const hash = HmacSHA1(this.config.key, sig);
+    let encoded;
+    // For browsers
+    if (typeof btoa !== 'undefined') encoded = btoa(hash);
+    // For nodejs
+    else encoded = hash.toString('base64');
     return {
-      sig: `PWS ${this.config.accessid}:${HmacSHA1(sig, this.config.key).toString(Base64)}`,
+      sig: `PWS ${this.config.accessid}:${encoded}`,
       date,
     };
   }
@@ -157,7 +162,7 @@ export default class PAPI {
     // If data was provided, encode and include it in the request
     if (data) xhrCfg.data = data;
 
-    // Call Axios
+    // Call Axios and return promise
     return axios(xhrCfg);
   }
 }
