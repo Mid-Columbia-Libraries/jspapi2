@@ -1,7 +1,6 @@
-import axios from 'axios';
 import HmacSHA1 from './libs/hmac-sha1.js';
 
-export default class PAPI {
+export default class jsPAPI {
   constructor(config) {
     const defaults = {
       key: '',
@@ -24,7 +23,7 @@ export default class PAPI {
       method: 'GET',
     };
 
-    this.initTime = PAPI.polarisDate();
+    this.initTime = jsPAPI.polarisDate();
     this.config = {
       ...defaults,
       ...config,
@@ -53,7 +52,7 @@ export default class PAPI {
    * @returns {object} - with structure: { sig : 'generated signature', date: 'A RFC 1123 GMT Date' }
    */
   buildSignature(method, url, pass = '') {
-    const date = PAPI.polarisDate();
+    const date = jsPAPI.polarisDate();
     const sig = method + url + date + pass;
     const hash = HmacSHA1(this.config.key, sig);
     let encoded;
@@ -135,19 +134,20 @@ export default class PAPI {
     }
 
     // Append endpoint
-    url = `${url}/${endpoint}`;
+    url = encodeURI(`${url}/${endpoint}`);
+    const headers = {
+      'Content-Type': config.encode,
+      'Accept': config.accept,
+    };
 
     // Generate date and signature elements
     const sig = this.buildSignature(config.method.toUpperCase(), url, config.secret);
 
     // Build Axios Config
-    const xhrCfg = {
-      headers: {
-        'Content-Type': config.encode,
-        Accept: config.accept,
-      },
+    const xhr = {
+      headers,
       method: config.method,
-      url: encodeURI(url),
+      url,
     };
 
     // If calling a public method with protected flag, append the staff token to header
@@ -160,10 +160,10 @@ export default class PAPI {
     }
 
     // If data was provided, encode and include it in the request
-    if (data) xhrCfg.data = data;
+    if (data) xhr.data = data;
 
     // Call Axios and return promise
-    return axios(xhrCfg);
+    return axios(xhr);
   }
 
   /**

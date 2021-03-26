@@ -5,7 +5,6 @@
   <meta charset="utf-8">
 
   <title>Example API Use</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script type="module" src="/dist/jsPAPI.js"></script>
 </head>
@@ -20,7 +19,7 @@
       domain: 'MCL-LIB',
       authlvl: 'patron'
     };
-    window.onload = () => { window.api = new jsPAPI(cfg); }
+    window.onload = () => { window.api = new jsPAPI(cfg, axios); }
   </script>
 </body>
 </html>
