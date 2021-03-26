@@ -282,17 +282,17 @@ export default class PAPI {
       return this.call(`search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${per}`);
   }
   
-/**
- * Returns the limit filters that this Polaris API understands
- * Note: this method does not generally return all possible filters
- *
- * @returns {promise}
- * @example 
- * api.limitFiltersGet()
- *   .then((response) => {
- *     console.log(response.data);
- *   });
- */
+  /**
+   * Returns the limit filters that this Polaris API understands
+   * Note: this method does not generally return all possible filters
+   *
+   * @returns {promise}
+   * @example 
+   * api.limitFiltersGet()
+   *   .then((response) => {
+   *     console.log(response.data);
+   *   });
+   */
   limitFiltersGet() {
     return this.call('limitfilters');
   }

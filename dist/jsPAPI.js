@@ -1672,8 +1672,139 @@
       // If data was provided, encode and include it in the request
       if (data) xhrCfg.data = data;
 
-      // Call Axios
+      // Call Axios and return promise
       return axios(xhrCfg);
+    }
+
+    /**
+     * Authenticates and returns an access token for a patron
+     *
+     * @param {string} barcode
+     * @param {string} password
+     * @returns {promise}
+     *
+     * @example myPapi.authenticatePatron('1234567890', 'patron-password')
+     *      .then(function(response) {
+     *          console.log(response.data);
+     *      });
+    */
+    authenticatePatron(Barcode, Password) {
+      return this.call(
+        'authenticator/patron',
+        { auth: 'public', method: 'POST' },
+        { Barcode, Password },
+      );
+    }
+
+    /**
+     * Authenticates staff credentials
+     *
+     * @param {string} user - your staff user's username
+     * @param {string} pass - your staff user's password
+     * @param {string} [domain=config.domain] - hint:domain is listed when signing into polaris staff client
+     * @returns {promise}
+     *
+     * @example myPapi.authenticateStaff('vance', 'my-password')
+     *      .then(function(response) {
+     *          console.log(response.data);
+     *      });
+     */
+    authenticateStaff(Username, Password, Domain = this.config.domain) {
+      return this.call(
+        'authenticator/staff',
+        { auth: 'protected', method: 'POST' },
+        { Domain, Username, Password },
+      );
+    }
+
+    /**
+     * Simple request to get a bib record by ID (Control Number)
+     *
+     * @param {integer} id - The bibligraphic ID you want to load
+     * @returns {promise}
+     *
+     * @example
+     * api.bibGet('1314713')
+     *   .then((response) => {
+     *     console.log(response.data);
+     *   });
+     */
+    bibGet(id) {
+      return this.call(`bib/${id}`);
+    }
+
+    /**
+     * A more robust search method
+     *
+     * @param {string|array} terms  - either a literal string or an array of the form [[bool, filter, value],['AND', 'AU', 'Tolkien'], ...]
+     * @param {int|string} page     - the search result page to return
+     * @param {int|string} per      - number of results per page
+     * @param {string|array} [limit]
+     * @param {string|array} [ccl]
+     * @returns {promise}
+     * 
+     * @example api.bibSearch('KW=dogs')
+     *      .then((response) => {
+     *          console.log(response.data);
+     *      });
+     * 
+     * @example api.bibSearch([['AND','AU','Tolkien'],['NOT','TI','Hobbits']])
+     *      .then((response) => {
+     *          console.log(response.data);
+     *      });
+     */
+
+    bibSearch(terms, page = 1, per = 10, limit = false, ccl = false) {
+      let url = 'search/bibs/boolean?q=';
+      // If a string was given, use as-is
+      if (typeof terms === 'string') url += terms;
+      // Otherwise, if an object was given split to key|value pairs
+      else {
+        for(let i = 0; i < terms.length; i++) {
+          if(i==0) {
+            url += terms[i][1] + '=' + terms[i][2] + ' ';
+          } else {
+            url += terms[i][0] + ' ' + terms[i][1] + '=' + terms[i][2] + ' ';
+          }
+        }
+      }
+      url = url + '&page=' + page + '&bibsperpage=' + per; 
+      return this.call(url);
+    }
+
+    /**
+     * A simplified search interface accepting a Type:Value pair
+     *
+     * @param {string} search   - The search term
+     * @param {string} kw       - KW|TI|AU|SU|NOTE|PUB|GENRE|SE|ISBN|ISSN|LCCN|PN|LC|DD|LOCAL|SUDOC|CODEN|STRN|CN|BC
+     * @param {int|string} page - the search result page to return
+     * @param {int|string} per  - number of results per page
+     * @returns {promise}
+     * 
+     * @example
+     * api.bibSearchKW('dogs', 'KW')
+     *   .then((response) => {
+     *     console.log(response.data);
+     *   });
+     */
+
+    bibSearchKW(search, kw = 'KW', page = 1, per = 10) {
+        return this.call(`search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${per}`);
+    }
+    
+    /**
+     * Returns the limit filters that this Polaris API understands
+     * Note: this method does not generally return all possible filters
+     *
+     * @returns {promise}
+     * @example 
+     * api.limitFiltersGet()
+     *   .then((response) => {
+     *     console.log(response.data);
+     *   });
+     */
+    limitFiltersGet() {
+      return this.call('limitfilters');
     }
   }
 

@@ -7,9 +7,20 @@
   <title>Example API Use</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="module" src="/dist/PAPI.js"></script>
+  <script type="module" src="/dist/jsPAPI.js"></script>
 </head>
 
 <body>
+  <script>
+    const cfg = {
+      accessid: 'drupal',
+      key: '',
+      orgid: '1',
+      server: 'catalog.midcolumbialibraries.org',
+      domain: 'MCL-LIB',
+      authlvl: 'patron'
+    };
+    window.onload = () => { window.api = new jsPAPI(cfg); }
+  </script>
 </body>
 </html>
