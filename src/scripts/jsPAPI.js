@@ -1,30 +1,33 @@
-import HmacSHA1 from './libs/hmac-sha1.js';
+import HmacSHA1 from "./libs/hmac-sha1.js";
 
 export default class jsPAPI {
   constructor(config, axios_instance) {
     const defaults = {
-      key: '',
-      accessid: '',
-      server: '',
-      domain: '',
-      appid: '100',
-      orgid: '1',
-      scheme: 'https://',
-      path: 'PAPIService/REST',
-      version: 'v1',
-      lang: '1033',
-      encode: 'application/json',
-      accept: 'application/json',
-      auth: 'public',
-      authlvl: 'public',
+      key: "",
+      accessid: "",
+      server: "",
+      domain: "",
+      appid: "100",
+      orgid: "1",
+      scheme: "https://",
+      path: "PAPIService/REST",
+      version: "v1",
+      lang: "1033",
+      encode: "application/json",
+      accept: "application/json",
+      auth: "public",
+      authlvl: "public",
       logging: true,
       token: null,
       pass: null,
-      method: 'GET',
+      method: "GET",
     };
 
     this.axios = axios_instance || axios;
-    if (typeof axios === undefined) throw new Error('You must provide access to axios either as a parameter or in the global scope');
+    if (typeof axios === undefined)
+      throw new Error(
+        "You must provide access to axios either as a parameter or in the global scope"
+      );
     this.initTime = jsPAPI.polarisDate();
     this.config = {
       ...defaults,
@@ -53,15 +56,15 @@ export default class jsPAPI {
    *
    * @returns {object} - with structure: { sig : 'generated signature', date: 'A RFC 1123 GMT Date' }
    */
-  buildSignature(method, url, pass = '') {
+  buildSignature(method, url, pass = "") {
     const date = jsPAPI.polarisDate();
     const sig = method + url + date + pass;
     const hash = HmacSHA1(this.config.key, sig);
     let encoded;
     // For browsers
-    if (typeof btoa !== 'undefined') encoded = btoa(hash);
+    if (typeof btoa !== "undefined") encoded = btoa(hash);
     // For nodejs
-    else encoded = hash.toString('base64');
+    else encoded = hash.toString("base64");
     return {
       sig: `PWS ${this.config.accessid}:${encoded}`,
       date,
@@ -115,35 +118,45 @@ export default class jsPAPI {
       ...params,
     };
     // Check for preceding /
-    if (!endpoint) throw new Error('You must provide an endpoint to call');
-    if (endpoint.startsWith('/')) throw new Error('Do not include a preceding / in your endpoint.');
+    if (!endpoint) throw new Error("You must provide an endpoint to call");
+    if (endpoint.startsWith("/"))
+      throw new Error("Do not include a preceding / in your endpoint.");
 
     // Implode base path pieces
-    let url = config.scheme + [
-      config.server,
-      config.path,
-      config.auth,
-      config.version,
-      config.lang,
-      config.appid,
-      config.orgid,
-    ].join('/');
+    let url =
+      config.scheme +
+      [
+        config.server,
+        config.path,
+        config.auth,
+        config.version,
+        config.lang,
+        config.appid,
+        config.orgid,
+      ].join("/");
 
     // If calling a protected method, append the authentication token
-    if (config.auth === 'protected') {
+    if (config.auth === "protected") {
       if (config.token) url = `${url}/${config.token}`;
-      else if (endpoint.toLowerCase() !== 'authenticator/staff') throw new Error('You must use an access token when calling protected methods.');
+      else if (endpoint.toLowerCase() !== "authenticator/staff")
+        throw new Error(
+          "You must use an access token when calling protected methods."
+        );
     }
 
     // Append endpoint
     url = encodeURI(`${url}/${endpoint}`);
     const headers = {
-      'Content-Type': config.encode,
-      'Accept': config.accept,
+      "Content-Type": config.encode,
+      Accept: config.accept,
     };
 
     // Generate date and signature elements
-    const sig = this.buildSignature(config.method.toUpperCase(), url, config.secret);
+    const sig = this.buildSignature(
+      config.method.toUpperCase(),
+      url,
+      config.secret
+    );
 
     // Build Axios Config
     const xhr = {
@@ -153,10 +166,11 @@ export default class jsPAPI {
     };
 
     // If calling a public method with protected flag, append the staff token to header
-    if (config.auth !== 'protected' && config.token) xhrCfg.headers['X-PAPI-AccessToken'] = config.token;
+    if (config.auth !== "protected" && config.token)
+      xhrCfg.headers["X-PAPI-AccessToken"] = config.token;
 
     // If calling a protected method or not using patron level auth, Append date & sig to header
-    if (config.auth === 'protected' || config.authlvl !== 'patron') {
+    if (config.auth === "protected" || config.authlvl !== "patron") {
       xhrCfg.headers.PolarisDate = sig.date;
       xhrCfg.headers.Authorization = sig.sig;
     }
@@ -179,12 +193,12 @@ export default class jsPAPI {
    *      .then(function(response) {
    *          console.log(response.data);
    *      });
-  */
+   */
   authenticatePatron(Barcode, Password) {
     return this.call(
-      'authenticator/patron',
-      { auth: 'public', method: 'POST' },
-      { Barcode, Password },
+      "authenticator/patron",
+      { auth: "public", method: "POST" },
+      { Barcode, Password }
     );
   }
 
@@ -203,9 +217,9 @@ export default class jsPAPI {
    */
   authenticateStaff(Username, Password, Domain = this.config.domain) {
     return this.call(
-      'authenticator/staff',
-      { auth: 'protected', method: 'POST' },
-      { Domain, Username, Password },
+      "authenticator/staff",
+      { auth: "protected", method: "POST" },
+      { Domain, Username, Password }
     );
   }
 
@@ -234,12 +248,12 @@ export default class jsPAPI {
    * @param {string|array} [limit]
    * @param {string|array} [ccl]
    * @returns {promise}
-   * 
+   *
    * @example api.bibSearch('KW=dogs')
    *      .then((response) => {
    *          console.log(response.data);
    *      });
-   * 
+   *
    * @example api.bibSearch([['AND','AU','Tolkien'],['NOT','TI','Hobbits']])
    *      .then((response) => {
    *          console.log(response.data);
@@ -247,20 +261,20 @@ export default class jsPAPI {
    */
 
   bibSearch(terms, page = 1, per = 10, limit = false, ccl = false) {
-    let url = 'search/bibs/boolean?q='
+    let url = "search/bibs/boolean?q=";
     // If a string was given, use as-is
-    if (typeof terms === 'string') url += terms;
+    if (typeof terms === "string") url += terms;
     // Otherwise, if an object was given split to key|value pairs
     else {
-      for(let i = 0; i < terms.length; i++) {
-        if(i==0) {
-          url += terms[i][1] + '=' + terms[i][2] + ' ';
+      for (let i = 0; i < terms.length; i++) {
+        if (i == 0) {
+          url += terms[i][1] + "=" + terms[i][2] + " ";
         } else {
-          url += terms[i][0] + ' ' + terms[i][1] + '=' + terms[i][2] + ' ';
+          url += terms[i][0] + " " + terms[i][1] + "=" + terms[i][2] + " ";
         }
       }
     }
-    url = url + '&page=' + page + '&bibsperpage=' + per 
+    url = url + "&page=" + page + "&bibsperpage=" + per;
     return this.call(url);
   }
 
@@ -272,7 +286,7 @@ export default class jsPAPI {
    * @param {int|string} page - the search result page to return
    * @param {int|string} per  - number of results per page
    * @returns {promise}
-   * 
+   *
    * @example
    * api.bibSearchKW('dogs', 'KW')
    *   .then((response) => {
@@ -280,22 +294,24 @@ export default class jsPAPI {
    *   });
    */
 
-  bibSearchKW(search, kw = 'KW', page = 1, per = 10) {
-      return this.call(`search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${per}`);
+  bibSearchKW(search, kw = "KW", page = 1, per = 10) {
+    return this.call(
+      `search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${per}`
+    );
   }
-  
+
   /**
    * Returns the limit filters that this Polaris API understands
    * Note: this method does not generally return all possible filters
    *
    * @returns {promise}
-   * @example 
+   * @example
    * api.limitFiltersGet()
    *   .then((response) => {
    *     console.log(response.data);
    *   });
    */
   limitFiltersGet() {
-    return this.call('limitfilters');
+    return this.call("limitfilters");
   }
 }

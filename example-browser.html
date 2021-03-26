@@ -1,25 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
 
-  <title>Example API Use</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="module" src="/dist/jsPAPI.js"></script>
-</head>
+    <title>Example API Use</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="/dist/jsPAPI.js"></script>
+  </head>
 
-<body>
-  <script>
-    const cfg = {
-      accessid: 'drupal',
-      key: '',
-      orgid: '1',
-      server: 'catalog.midcolumbialibraries.org',
-      domain: 'MCL-LIB',
-      authlvl: 'patron'
-    };
-    window.onload = () => { window.api = new jsPAPI(cfg); }
-  </script>
-</body>
+  <body>
+    <script>
+      const cfg = {
+        accessid: "drupal",
+        key: "",
+        orgid: "1",
+        server: "catalog.midcolumbialibraries.org",
+        domain: "MCL-LIB",
+        authlvl: "patron",
+      };
+      window.onload = () => {
+        window.api = new jsPAPI(cfg);
+      };
+    </script>
+  </body>
 </html>
