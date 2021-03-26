@@ -1,7 +1,7 @@
 import HmacSHA1 from './libs/hmac-sha1.js';
 
 export default class jsPAPI {
-  constructor(config) {
+  constructor(config, axios_instance) {
     const defaults = {
       key: '',
       accessid: '',
@@ -23,6 +23,8 @@ export default class jsPAPI {
       method: 'GET',
     };
 
+    this.axios = axios_instance || axios;
+    if (typeof axios === undefined) throw new Error('You must provide access to axios either as a parameter or in the global scope');
     this.initTime = jsPAPI.polarisDate();
     this.config = {
       ...defaults,
@@ -163,7 +165,7 @@ export default class jsPAPI {
     if (data) xhr.data = data;
 
     // Call Axios and return promise
-    return axios(xhr);
+    return this.axios(xhr);
   }
 
   /**
