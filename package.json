@@ -19,6 +19,7 @@
     "rollup": "^2.42.4"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "lodash": "^4.17.21"
   }
 }
