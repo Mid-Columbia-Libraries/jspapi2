@@ -1,13 +1,8 @@
 (function (global, factory) {
-  typeof exports === "object" && typeof module !== "undefined"
-    ? (module.exports = factory())
-    : typeof define === "function" && define.amd
-    ? define(factory)
-    : ((global =
-        typeof globalThis !== "undefined" ? globalThis : global || self),
-      (global.jsPAPI = factory()));
-})(this, function () {
-  "use strict";
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.jsPAPI = factory());
+}(this, (function () { 'use strict';
 
   /* eslint-disable */
   /**
@@ -114,8 +109,7 @@
       return _c(o.concat(h), 512 + 160);
     }
     function _n(b) {
-      var t =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+      var t = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
         s = "";
       for (var i = 0; i < b.length * 4; i += 3) {
         var r =
@@ -171,6 +165,10 @@
         ...defaults,
         ...config,
       };
+    }
+
+    getConfig() {
+      return this.config;
     }
 
     /**
@@ -455,4 +453,5 @@
   }
 
   return jsPAPI;
-});
+
+})));

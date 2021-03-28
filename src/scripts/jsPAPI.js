@@ -1,6 +1,6 @@
 import HmacSHA1 from "./libs/hmac-sha1.js";
 
-export default class jsPAPI {
+export default class JsPAPI {
   constructor(config, axios_instance) {
     const defaults = {
       key: "",
@@ -28,11 +28,16 @@ export default class jsPAPI {
       throw new Error(
         "You must provide access to axios either as a parameter or in the global scope"
       );
-    this.initTime = jsPAPI.polarisDate();
+    this.initTime = JsPAPI.polarisDate();
     this.config = {
       ...defaults,
       ...config,
     };
+  }
+
+  getConfig() {
+    console.log(this.config);
+    return this.config;
   }
 
   /**
@@ -57,7 +62,7 @@ export default class jsPAPI {
    * @returns {object} - with structure: { sig : 'generated signature', date: 'A RFC 1123 GMT Date' }
    */
   buildSignature(method, url, pass = "") {
-    const date = jsPAPI.polarisDate();
+    const date = JsPAPI.polarisDate();
     const sig = method + url + date + pass;
     const hash = HmacSHA1(this.config.key, sig);
     let encoded;
