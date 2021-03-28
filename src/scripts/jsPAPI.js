@@ -36,7 +36,6 @@ export default class JsPAPI {
   }
 
   getConfig() {
-    console.log(this.config);
     return this.config;
   }
 
