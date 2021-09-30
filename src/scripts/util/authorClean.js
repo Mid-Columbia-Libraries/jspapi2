@@ -10,5 +10,6 @@
     .replace(/[^a-zA-Z,. ]/g, '')
     .replace(/author|artist|illustrator/g, '')
     .replace(/[^a-zA-Z]+$/g, '')
+    .replace(/[ \t]{2,}/g, '')
     .trim();
 }
