@@ -11,6 +11,7 @@ export default class JsPAPI {
       orgid: "1",
       scheme: "https://",
       path: "PAPIService/REST",
+      pacpath: "polaris",
       version: "v1",
       lang: "1033",
       encode: "application/json",
