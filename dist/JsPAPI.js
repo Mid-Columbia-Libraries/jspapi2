@@ -132,6 +132,104 @@
     return _x(k, d);
   }
 
+  /**
+   * Polaris bib listings often have a lot of junk in the author field.
+   * This function attempts to clean them up to something more like `Last, First`
+   * @param {String} author The author string from Polaris API to be cleaned up
+   * @returns {String}
+   */
+   function authorClean(author) {
+    if (!author) return '';
+    return author
+      .replace(/[^a-zA-Z,. ]/g, '')
+      .replace(/author|artist|illustrator/g, '')
+      .replace(/[^a-zA-Z]+$/g, '')
+      .replace(/[ \t]{2,}/g, '')
+      .trim();
+  }
+
+  /**
+   * Converts a set of bib record rows into an object that is easier to use
+   * @param {Object} bib A bib record from Polaris API
+   */
+   
+  function bibParser(bib) {
+    if (bib.PAPIErrorCode !== 0) return false;
+    const p2 = {};
+    bib.BibGetRows.forEach((v) => {
+      let id = v.ElementID;
+      if (!p2[id]) p2[id] = {
+        label: v.Label,
+        typeID: id,
+        type: lookupType(id),
+        values: [],
+      };
+      p2[id].values.push(v.Value);
+    });
+
+    return p2;
+  }
+
+  function lookupType(id) {
+    const types = {
+      2: 'publisher',
+      3: 'description',
+      5: 'edition',
+      6: 'isbn',
+      7: 'available',
+      8: 'holds',
+      9: 'summary',
+      13: 'cn',
+      16: 'systemIn',
+      17: 'format',
+      18: 'author',
+      20: 'subjects',
+      23: 'lccn',
+      28: 'notes',
+      35: 'title',
+      44: 'targetAudience',
+    };
+    let type = types[id];
+    if (!type) console.log(`Missing bib type ${id}`);
+    return (type) ? type : id;
+  }
+
+  /**
+   * Formats and returns a syndetics image url for a given PAC item
+   * @param {Object} item Polaris Bib Item
+   * @returns {String}
+   */
+   function syndeticsURL (client, isbn, upc, oclc) {
+    return `https://syndetics.com/index.aspx?isbn=${isbn}/LC.JPG&client=${client}&upc=${upc}&oclc=${oclc}`;
+  }
+
+  /**
+   * Given a bib record item, returns a string URL to the catalog item on the configured PAC
+   * 
+   * @returns {string} - the link to the catalog item
+   * @param {object|string} item - a single item from a bib record result, can be string/integer ControlNumber, or a full item record from api
+   * @param {object} config - a jsPAPI config object with server settings f.x. domain etc
+   */
+   function itemURL(item, config) {
+    const cn = item.ControlNumber ?? item;
+    const url = `${config.scheme}${config.server}/${config.pacpath}/search/title.aspx?pos=1&cn=${cn}&ctx=${config.orgid}.${config.lang}`;
+    return url;
+  }
+
+  /**
+   * Truncates a string to given length on word boundary, adding ellipsis if truncated
+   * @param {String} str
+   * @param {Integer} n
+   * @returns String
+   */
+   function truncate(str, n) {
+    if (!str) return '';
+    if (str.length <= n) { return str; }
+    let s = str.substr(0, n - 1);
+    s = s.substr(0, s.lastIndexOf(' '));
+    return `${s}...`;
+  }
+
   class JsPAPI {
     constructor(config, axios_instance) {
       const defaults = {
@@ -143,6 +241,7 @@
         orgid: "1",
         scheme: "https://",
         path: "PAPIService/REST",
+        pacpath: "polaris",
         version: "v1",
         lang: "1033",
         encode: "application/json",
@@ -165,6 +264,14 @@
         ...defaults,
         ...config,
       };
+    }
+    
+    static util = {
+      authorClean,
+      bibParser,
+      syndeticsURL,
+      itemURL,
+      truncate
     }
 
     getConfig() {

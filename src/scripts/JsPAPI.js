@@ -1,4 +1,10 @@
 import HmacSHA1 from "./libs/hmac-sha1.js";
+import authorClean from './util/authorClean';
+import bibParser from './util/bibParser';
+import syndeticsURL from './util/syndeticsURL';
+import itemURL from './util/itemURL';
+import truncate from './util/truncate';
+
 
 export default class JsPAPI {
   constructor(config, axios_instance) {
@@ -34,6 +40,14 @@ export default class JsPAPI {
       ...defaults,
       ...config,
     };
+  }
+  
+  static util = {
+    authorClean,
+    bibParser,
+    syndeticsURL,
+    itemURL,
+    truncate
   }
 
   getConfig() {
