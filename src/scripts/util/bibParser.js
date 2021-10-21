@@ -7,11 +7,11 @@ export default function(bib) {
   if (bib.PAPIErrorCode !== 0) return false;
   const p2 = {};
   bib.BibGetRows.forEach((v) => {
-    let id = v.ElementID;
+    let id = lookupType(v.ElementID);
     if (!p2[id]) p2[id] = {
       label: v.Label,
-      typeID: id,
-      type: lookupType(id),
+      typeID: v.ElementID,
+      type: id,
       values: [],
     }
     p2[id].values.push(v.Value);
