@@ -378,6 +378,7 @@
           config.orgid,
         ].join("/");
 
+
       // If calling a protected method, append the authentication token
       if (config.auth === "protected") {
         if (config.token) url = `${url}/${config.token}`;
@@ -393,6 +394,7 @@
         "Content-Type": config.encode,
         Accept: config.accept,
       };
+      
 
       // Generate date and signature elements
       const sig = this.buildSignature(
@@ -420,6 +422,8 @@
 
       // If data was provided, encode and include it in the request
       if (data) xhr.data = data;
+
+      console.log(`JsPAPI | Dispatching call to ${url}`);
 
       // Call Axios and return promise
       return this.axios(xhr);
@@ -508,7 +512,7 @@
       // Set default values for missing params
       let terms = params.terms ?? 'TI=*';
       let page = params.page ?? 1;
-      let per = params.per ?? 10;
+      let num = params.num ?? 10;
       let limit = params.limit ?? false;
       let sort = params.sort ?? false;
 
@@ -527,7 +531,7 @@
       }
       if (sort) url += `+sortby+${sort}`;
       if (limit) url += `&limit=${limit}`;
-      url = `${url}&page=${page}&bibsperpage=${per}`;
+      url = `${url}&page=${page}&bibsperpage=${num}`;
       return this.call(url);
     }
 
@@ -537,7 +541,7 @@
      * @param {string} search   - The search term
      * @param {string} kw       - KW|TI|AU|SU|NOTE|PUB|GENRE|SE|ISBN|ISSN|LCCN|PN|LC|DD|LOCAL|SUDOC|CODEN|STRN|CN|BC
      * @param {int|string} page - the search result page to return
-     * @param {int|string} per  - number of results per page
+     * @param {int|string} num  - number of results per page
      * @returns {promise}
      *
      * @example
@@ -547,9 +551,9 @@
      *   });
      */
 
-    bibSearchKW(search, kw = "KW", page = 1, per = 10) {
+    bibSearchKW(search, kw = "KW", page = 1, num = 10) {
       return this.call(
-        `search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${per}`
+        `search/bibs/keyword/${kw.toUpperCase()}?q=${search}&page=${page}&bibsperpage=${num}`
       );
     }
 
