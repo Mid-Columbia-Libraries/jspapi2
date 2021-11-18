@@ -261,11 +261,11 @@ export default class JsPAPI {
   /**
    * A more robust search method
    *
-   * @param {string|array} terms  - either a literal string or an array of the form [[bool, filter, value],['AND', 'AU', 'Tolkien'], ...]
-   * @param {int|string} page     - the search result page to return
-   * @param {int|string} per      - number of results per page
-   * @param {string|array} [limit]
-   * @param {string|array} [ccl]
+   * @param {string|object} params       - either a literal string or an array of the form [[bool, filter, value],['AND', 'AU', 'Tolkien'], ...]
+   * @param {int|string}    params.page  - the search result page to return
+   * @param {int|string}    params.per   - number of results per page
+   * @param {string}        params.sort  - sort parameter, f.x. 'MP/sort.descending', 'TI', 'RELEVANCE'
+   * @param {string|array}  params.limit - limit filter
    * @returns {promise}
    *
    * @example api.bibSearch('KW=dogs')
@@ -279,7 +279,15 @@ export default class JsPAPI {
    *      });
    */
 
-  bibSearch(terms, page = 1, per = 10, limit = false, ccl = false) {
+  bibSearch(params) {
+    console.log(params);
+    // Set default values for missing params
+    let terms = params.terms ?? 'TI=*';
+    let page = params.page ?? 1;
+    let per = params.per ?? 10;
+    let limit = params.limit ?? false;
+    let sort = params.sort ?? false;
+
     let url = "search/bibs/boolean?q=";
     // If a string was given, use as-is
     if (typeof terms === "string") url += terms;
@@ -293,7 +301,9 @@ export default class JsPAPI {
         }
       }
     }
-    url = url + "&page=" + page + "&bibsperpage=" + per;
+    if (sort) url += `+sortby+${sort}`;
+    if (limit) url += `&limit=${limit}`;
+    url = `${url}&page=${page}&bibsperpage=${per}`;
     return this.call(url);
   }
 
