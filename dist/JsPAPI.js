@@ -522,13 +522,10 @@
       // Otherwise, if an object was given split to key|value pairs
       else {
         for (let i = 0; i < terms.length; i++) {
-          if (i == 0) {
-            url += terms[i][1] + "=" + terms[i][2] + " ";
-          } else {
-            url += terms[i][0] + " " + terms[i][1] + "=" + terms[i][2] + " ";
-          }
+          url += `${terms[i]}`;
         }
       }
+
       if (sort) url += `+sortby+${sort}`;
       if (limit) url += `&limit=${limit}`;
       url = `${url}&page=${page}&bibsperpage=${num}`;
