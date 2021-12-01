@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>jsPAPI  |  A JavaScript Polaris API Wrapper</h1>
+<ul>
+<li><a href="#status">Project Status</a></li>
+<li><a href="#docs">Documentation</a></li>
+<li><a href="#contact">Contact</a></li>
+<li><a href="#install">Installation</a></li>
+<li><a href="#init">Initialization</a></li>
+<li><a href="#config">Configuration</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#faq">FAQ / Troubleshooting</a></li>
+</ul>
+<hr>
+<h2><a name="status"></a>Project Status</h2>
+<p>jsPAPI-2 replaces the original jsPAPI with a modernized version supporting es6 style modules.</p>
+<p>jsPAPI currently implements bib and catalog related public methods of the Polaris API, patron and staff authentication, a flexible module core and the ability to manually implement any Polaris API methods with the powerfall call() method.</p>
+<hr>
+<h2><a name="docs"></a>Documentation</h2>
+<p>Developer documentation of public methods is available in <code>./docs</code> or <a href="https://mid-columbia-libraries.github.io/jsPAPI2/">online</a>:</p>
+<hr>
+<h2><a name="contact"></a>Contact</h2>
+<p>jsPAPI is developed and maintained by Vance Cole at Mid-Columbia Libraries in Washington State. If you need help or have questions please feel free to contact me, <a href="mailto:vcole@midcolumbialibraries.org">vcole@midcolumbialibraries.org</a>.</p>
+<hr>
+<h2><a name="install"></a>Installation</h2>
+<h3>For NodeJS</h3>
+<p>jsPAPI-2 is not yet published to NPM.</p>
+<p>You can install jsPAPI by cloning the repository or by downloading the compiled package.</p>
+<p>If you want to extend the API or use jsPAPI in a NodeJS application you should probably clone the source repo. You will need <a href="https://nodejs.org/en/">NodeJS</a> and <a href="https://www.npmjs.com/">NPM</a> to install dependencies:</p>
+<pre class="prettyprint source lang-Bash"><code>    git clone https://github.com/Mid-Columbia-Libraries/jsPAPI jspapi
+    cd jspapi
+    npm install
+</code></pre>
+<p>You may want to copy <code>config.example.js</code> to <code>config.js</code> to set up your environment variables such as your API Server, key, AccessID and Domain. Alternatively, you can pass the needed config params at initialization, see: <a href="#init">initialization</a>.</p>
+<pre class="prettyprint source lang-Bash"><code>    cp config.example.js config.js
+</code></pre>
+<p>See <a href="#config">configuration</a> for a list of valid configuration options.</p>
+<h3>For Browsers</h3>
+<p>If you want to be able to use jsPAPI from your web application, you can simply use the compiled  version from <code>./dist</code> and include it in your HTML:</p>
+<pre class="prettyprint source lang-HTML"><code>  &lt;script src=&quot;jsPAPI.js&quot;>&lt;/script>
+</code></pre>
+<hr>
+<h2><a name="init"></a>Initialization</h2>
+<p>jsPAPI is namespaced under the global <code>jsPAPI</code>.</p>
+<p>To start using the API you will need to create an instance of the jsPAPI class and pass it configuration for your API Server. This can be accomplished by either editing your config.js file, or passing parameters to the instance when you create it:</p>
+<pre class="prettyprint source lang-Javascript"><code>  // Most configuration options have reasonable defaults
+  // The below example shows the essential params you need
+  // to set which are specific to your organization
+  let config = {
+    accessid: 'your-web-app',
+    key: 'W3CV1V1H-GBUC-3E3P-QP42-1M9CODN0LHVU',
+    orgid: '1',
+    server: 'catalog.midcolumbialibraries.org',
+    domain: 'MCL-LIB',
+  };
+
+  // Initialize an API instance with the config
+  let myApi = new jsPAPI(config);
+</code></pre>
+<hr>
+<h2><a name="config"></a>Configuration</h2>
+<h3>The following values are required</h3>
+<p>Your accessid and api key can be found or created in the Polaris Web Admin Tool under the <code>PAPI Key Management</code> tab, or provided by Polaris.</p>
+<p>Your server is the domain (without scheme) that your server is listening on, for example <code>catalog.my-library.org</code></p>
+<p>Your domain is the domain that Polaris uses to authenticate staff, in the Polaris ILS Client your domain will be listed under your User name and Password fields during log on. Domain, Key and AccessID are not necessary if you are using only public methods of the API and have enabled Patron Only level authentication on your server, <a href="#disable-key">see here</a> for details.</p>
+<ul>
+<li>server</li>
+<li>accessid</li>
+<li>key</li>
+<li>domain</li>
+</ul>
+<h3>The following values have sane defaults which should work in most cases, but can be overridden if needed</h3>
+<ul>
+<li>appid - 100</li>
+<li>orgid - 1</li>
+<li>scheme - https://</li>
+<li>path - PAPIService/REST</li>
+<li>version - v1</li>
+<li>lang - 1033</li>
+<li>encode - 'application/json'</li>
+<li>accept - 'application/json'</li>
+<li>logging - true</li>
+<li>authlvl - all</li>
+</ul>
+<hr>
+<h2><a name="usage"></a>Usage</h2>
+<p>Once initialized you can start calling the API using the various methods available. All API calls will be returned as an asynchronous promise supporting .then() and .catch() chaining. For more information on Promises, see <a href="'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises'">Using Promises</a>. Here is an example of a simple API call to the bibSearchKW method which will return items with the word <code>dogs</code> in the title field:</p>
+<pre class="prettyprint source lang-Javascript"><code>    // Search for items with 'dogs' in the title
+    myApi.bibSearchKW('dogs', 'TI')
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log('Oops, something went wrong');
+        });
+</code></pre>
+<p>You can also have the promise call your own callback function when it returns, for example here is a call to the more complex bibSearch() function which would return items with Author=Tolkien but NOT title=Hobbit:</p>
+<pre class="prettyprint source lang-Javascript"><code>    const myThenFunction = function(response) {
+        console.log(response.data);
+    }
+
+    const myCatchFunction = function(error) {
+        console.error(error);
+    }
+
+    // Search for items with 'dogs' in the title
+    test.bibSearch([['AND','AU','tolkien'],['NOT','TI','hobbit']])
+        .then(myThenFunction)
+        .catch(myCatchFunction);
+
+</code></pre>
+<p>NOTE: The .then() block will invoke your callback function automatically. Do NOT directly invoke the function in the then() block unless you understand closures and intend to invoke one, example:</p>
+<pre class="prettyprint source lang-Javascript"><code>    // This probably does not do what you think it does, do not do this unless you are intending to invoke a closure
+    test.bibSearch([['AND','AU','tolkien'],['NOT','TI','hobbit']])
+        .then(myThenFunction(response))
+        .catch(myCatchFunction(error));
+</code></pre>
+<p>For examples of each public funtion see the respective function documentation page.</p>
+<hr>
+<h2><a name="faq"></a>FAQ / Troubleshooting</h2>
+<h3>I am trying to run the API in my NodeJS project but I am getting an error like <code>Error: Cannot find module ...</code> or <code>... is not recognized as an internal or external command...</code></h3>
+<p>You probably forgot to install dependencies. Run:</p>
+<pre class="prettyprint source lang-Bash"><code>    npm install
+</code></pre>
+<h3>My browser console says something about <code>XMLHttpRequest cannot load</code> ... and <code>CORS</code>, <code>Access-Control-Allow-Origin</code>, <code>Access-Control-Allow-Methods</code> or <code>Access-Control-Allow-Headers</code></h3>
+<p>By default the Polaris API server that Innovative sets up for you does not set headers to allow AJAX requests originating on cross domain origins. Mostly only client-side code running in browsers will care about this, NodeJS or other back-end services generally will happily accept responses cross domain.</p>
+<p>You can add the required headers by editing <code>web.config</code> in your PAPIService\REST directory, usually at <code>C:\Program Files\Polaris\{version}\PAPIService\REST\web.config</code>. Add the following code somewhere in between <code>&lt;system.webServer&gt;</code> and <code>&lt;/system.webserver&gt;</code></p>
+<pre class="prettyprint source lang-XML"><code>&lt;!-- Allow CORS -->
+    &lt;httpProtocol>
+        &lt;customHeaders>
+        &lt;add name=&quot;Access-Control-Allow-Origin&quot; value=&quot;*&quot; />
+        &lt;add name=&quot;Access-Control-Allow-Methods&quot; value=&quot;GET,PUT,POST,DELETE,PATCH,OPTIONS&quot; />
+        &lt;add name=&quot;Access-Control-Allow-Headers&quot; value=&quot;Authorization, PolarisDate&quot; />
+        &lt;/customHeaders>
+    &lt;/httpProtocol>
+</code></pre>
+<p>You will need to restart IIS for this to take effect. Open a command prompt with administrator priviledges and type:</p>
+<pre class="prettyprint source lang-Powershell"><code>    iisreset
+</code></pre>
+<p>You may also encounter this issue if you are trying to make API requests from an HTML file running locally on your machine, for example <code>file:///C:/Users/you/Desktop/myPage.html</code>. This is a security restriction in certain browsers such as Chrome. You can fix this by hosting your development file on some sort of web or local development server.</p>
+<h3><a name="disable-key"></a>I want to call the Polaris API's public methods such as bibGet() and bibSearch() directly from the browser, but I don't want to release our API key</h3>
+<p>Edit <code>appsettings.config</code> in your PAPIService\REST directory, usually at <code>C:\Program Files\Polaris\{version}\PAPIService\REST\appsettings.config</code>. Change the line that says:</p>
+<pre class="prettyprint source lang-XML"><code>    &lt;add key=&quot;AuthenticationLevel&quot; value=&quot;ALL&quot;/>
+</code></pre>
+<p>to</p>
+<pre class="prettyprint source lang-XML"><code>    &lt;add key=&quot;AuthenticationLevel&quot; value=&quot;PATRON&quot;/>
+</code></pre>
+<p>You will need to restart IIS for this to take effect. Open a command prompt with administrator priviledges and type:</p>
+<pre class="prettyprint source lang-Powershell"><code>    iisreset
+</code></pre>
+<p>Now you can initialize the PolarisAPI with the config parameter &quot;authlvl&quot;:&quot;patron&quot; and you will be able to call public methods without an access key.</p>
+<h3>My browser or server console says something about <code>401 Unauthorized</code></h3>
+<p>There are a number of causes for this.</p>
+<ul>
+<li>Make sure you provided a valid API Key, AccessID and Domain when you initialized your API.</li>
+<li>If you are trying to call a patron or staff protected method, ensure you provided a valid and not-expired authentication token from <code>authenticatePatron</code> or <code>authenticateStaff()</code></li>
+<li>If you tried using an HTTP Scheme, try HTTPS.</li>
+<li>Make sure your system time is set correctly on both your client and server machines</li>
+<li>Your IIS server could be configured to deny requests to the API from outside your local network</li>
+<li>Check your IIS logs on the Polaris API Server for hints</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#authenticatePatron">authenticatePatron</a></li><li><a href="global.html#authenticateStaff">authenticateStaff</a></li><li><a href="global.html#bibGet">bibGet</a></li><li><a href="global.html#bibSearch">bibSearch</a></li><li><a href="global.html#bibSearchKW">bibSearchKW</a></li><li><a href="global.html#buildSignature">buildSignature</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#limitFiltersGet">limitFiltersGet</a></li><li><a href="global.html#polarisDate">polarisDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Dec 01 2021 11:45:23 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
