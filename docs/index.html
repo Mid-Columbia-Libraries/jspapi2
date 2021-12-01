@@ -43,7 +43,7 @@
 
 
     <section>
-        <article><h1>jsPAPI  |  A JavaScript Polaris API Wrapper</h1>
+        <article><h1>JsPAPI  |  A JavaScript Polaris API Wrapper</h1>
 <ul>
 <li><a href="#status">Project Status</a></li>
 <li><a href="#docs">Documentation</a></li>
@@ -56,21 +56,21 @@
 </ul>
 <hr>
 <h2><a name="status"></a>Project Status</h2>
-<p>jsPAPI-2 replaces the original jsPAPI with a modernized version supporting es6 style modules.</p>
-<p>jsPAPI currently implements bib and catalog related public methods of the Polaris API, patron and staff authentication, a flexible module core and the ability to manually implement any Polaris API methods with the powerfall call() method.</p>
+<p>JsPAPI2 replaces the original JsPAPI with a modernized version supporting es6 style modules.</p>
+<p>JsPAPI2 currently implements bib and catalog related public methods of the Polaris API, patron and staff authentication, a flexible module core and the ability to manually implement any Polaris API methods with the powerfall call() method.</p>
 <hr>
 <h2><a name="docs"></a>Documentation</h2>
-<p>Developer documentation of public methods is available in <code>./docs</code> or <a href="https://mid-columbia-libraries.github.io/jsPAPI2/">online</a>:</p>
+<p>Developer documentation of public methods is available in <code>./docs</code> or <a href="https://mid-columbia-libraries.github.io/jspapi2/">online</a>:</p>
 <hr>
 <h2><a name="contact"></a>Contact</h2>
-<p>jsPAPI is developed and maintained by Vance Cole at Mid-Columbia Libraries in Washington State. If you need help or have questions please feel free to contact me, <a href="mailto:vcole@midcolumbialibraries.org">vcole@midcolumbialibraries.org</a>.</p>
+<p>JsPAPI is developed and maintained by Vance Cole at Mid-Columbia Libraries in Washington State. If you need help or have questions please feel free to contact me, <a href="mailto:vcole@midcolumbialibraries.org">vcole@midcolumbialibraries.org</a>.</p>
 <hr>
 <h2><a name="install"></a>Installation</h2>
 <h3>For NodeJS</h3>
-<p>jsPAPI-2 is not yet published to NPM.</p>
-<p>You can install jsPAPI by cloning the repository or by downloading the compiled package.</p>
-<p>If you want to extend the API or use jsPAPI in a NodeJS application you should probably clone the source repo. You will need <a href="https://nodejs.org/en/">NodeJS</a> and <a href="https://www.npmjs.com/">NPM</a> to install dependencies:</p>
-<pre class="prettyprint source lang-Bash"><code>    git clone https://github.com/Mid-Columbia-Libraries/jsPAPI jspapi
+<p>JsPAPI-2 is not yet published to NPM.</p>
+<p>You can install JsPAPI by cloning the repository or by downloading the compiled package.</p>
+<p>If you want to extend the API or use JsPAPI in a NodeJS application you should probably clone the source repo. You will need <a href="https://nodejs.org/en/">NodeJS</a> and <a href="https://www.npmjs.com/">NPM</a> to install dependencies:</p>
+<pre class="prettyprint source lang-Bash"><code>    git clone https://github.com/Mid-Columbia-Libraries/jspapi2 jspapi
     cd jspapi
     npm install
 </code></pre>
@@ -79,13 +79,13 @@
 </code></pre>
 <p>See <a href="#config">configuration</a> for a list of valid configuration options.</p>
 <h3>For Browsers</h3>
-<p>If you want to be able to use jsPAPI from your web application, you can simply use the compiled  version from <code>./dist</code> and include it in your HTML:</p>
-<pre class="prettyprint source lang-HTML"><code>  &lt;script src=&quot;jsPAPI.js&quot;>&lt;/script>
+<p>If you want to be able to use JsPAPI from your web application, you can simply use the compiled  version from <code>./dist</code> and include it in your HTML:</p>
+<pre class="prettyprint source lang-HTML"><code>  &lt;script src=&quot;JsPAPI.js&quot;>&lt;/script>
 </code></pre>
 <hr>
 <h2><a name="init"></a>Initialization</h2>
-<p>jsPAPI is namespaced under the global <code>jsPAPI</code>.</p>
-<p>To start using the API you will need to create an instance of the jsPAPI class and pass it configuration for your API Server. This can be accomplished by either editing your config.js file, or passing parameters to the instance when you create it:</p>
+<p>JsPAPI is namespaced under the global <code>JsPAPI</code>.</p>
+<p>To start using the API you will need to create an instance of the JsPAPI class and pass it configuration for your API Server. This can be accomplished by either editing your config.js file, or passing parameters to the instance when you create it:</p>
 <pre class="prettyprint source lang-Javascript"><code>  // Most configuration options have reasonable defaults
   // The below example shows the essential params you need
   // to set which are specific to your organization
@@ -98,7 +98,7 @@
   };
 
   // Initialize an API instance with the config
-  let myApi = new jsPAPI(config);
+  let myApi = new JsPAPI(config);
 </code></pre>
 <hr>
 <h2><a name="config"></a>Configuration</h2>
@@ -218,7 +218,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Dec 01 2021 11:45:23 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Dec 01 2021 11:50:02 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
