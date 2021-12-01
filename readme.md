@@ -1,4 +1,4 @@
-# jsPAPI  |  A JavaScript Polaris API Wrapper
+# JsPAPI  |  A JavaScript Polaris API Wrapper
 
 * [Project Status](#status)
 * [Documentation](#docs)
@@ -13,21 +13,21 @@
 
 ## <a name="status"></a>Project Status
 
-jsPAPI-2 replaces the original jsPAPI with a modernized version supporting es6 style modules.
+JsPAPI2 replaces the original JsPAPI with a modernized version supporting es6 style modules.
 
-jsPAPI currently implements bib and catalog related public methods of the Polaris API, patron and staff authentication, a flexible module core and the ability to manually implement any Polaris API methods with the powerfall call() method.
+JsPAPI2 currently implements bib and catalog related public methods of the Polaris API, patron and staff authentication, a flexible module core and the ability to manually implement any Polaris API methods with the powerfall call() method.
 
 ---
 
 ## <a name="docs"></a>Documentation
 
-Developer documentation of public methods is available in `./docs` or [online](https://mid-columbia-libraries.github.io/jsPAPI2/):
+Developer documentation of public methods is available in `./docs` or [online](https://mid-columbia-libraries.github.io/jspapi2/):
 
 ---
 
 ## <a name="contact"></a>Contact
 
-jsPAPI is developed and maintained by Vance Cole at Mid-Columbia Libraries in Washington State. If you need help or have questions please feel free to contact me, [vcole@midcolumbialibraries.org](mailto:vcole@midcolumbialibraries.org).
+JsPAPI is developed and maintained by Vance Cole at Mid-Columbia Libraries in Washington State. If you need help or have questions please feel free to contact me, [vcole@midcolumbialibraries.org](mailto:vcole@midcolumbialibraries.org).
 
 ---
 
@@ -35,14 +35,14 @@ jsPAPI is developed and maintained by Vance Cole at Mid-Columbia Libraries in Wa
 
 ### For NodeJS
 
-jsPAPI-2 is not yet published to NPM.
+JsPAPI-2 is not yet published to NPM.
 
-You can install jsPAPI by cloning the repository or by downloading the compiled package.
+You can install JsPAPI by cloning the repository or by downloading the compiled package.
 
-If you want to extend the API or use jsPAPI in a NodeJS application you should probably clone the source repo. You will need [NodeJS](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/) to install dependencies:
+If you want to extend the API or use JsPAPI in a NodeJS application you should probably clone the source repo. You will need [NodeJS](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/) to install dependencies:
 
 ``` Bash
-    git clone https://github.com/Mid-Columbia-Libraries/jsPAPI jspapi
+    git clone https://github.com/Mid-Columbia-Libraries/jspapi2 jspapi
     cd jspapi
     npm install
 ```
@@ -57,19 +57,19 @@ See [configuration](#config) for a list of valid configuration options.
 
 ### For Browsers
 
-If you want to be able to use jsPAPI from your web application, you can simply use the compiled  version from `./dist` and include it in your HTML:
+If you want to be able to use JsPAPI from your web application, you can simply use the compiled  version from `./dist` and include it in your HTML:
 
 ``` HTML
-  <script src="jsPAPI.js"></script>
+  <script src="JsPAPI.js"></script>
 ```
 
 ---
     
 ## <a name="init"></a>Initialization
 
-jsPAPI is namespaced under the global `jsPAPI`.
+JsPAPI is namespaced under the global `JsPAPI`.
 
-To start using the API you will need to create an instance of the jsPAPI class and pass it configuration for your API Server. This can be accomplished by either editing your config.js file, or passing parameters to the instance when you create it:
+To start using the API you will need to create an instance of the JsPAPI class and pass it configuration for your API Server. This can be accomplished by either editing your config.js file, or passing parameters to the instance when you create it:
 
 ``` Javascript
   // Most configuration options have reasonable defaults
@@ -84,7 +84,7 @@ To start using the API you will need to create an instance of the jsPAPI class a
   };
 
   // Initialize an API instance with the config
-  let myApi = new jsPAPI(config);
+  let myApi = new JsPAPI(config);
 ```
 
 ---
