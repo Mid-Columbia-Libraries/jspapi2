@@ -60,7 +60,7 @@ See [configuration](#config) for a list of valid configuration options.
 If you want to be able to use jsPAPI from your web application, you can simply use the compiled  version from `./dist` and include it in your HTML:
 
 ``` HTML
-    <script src="jsPAPI.js"></script>
+  <script src="jsPAPI.js"></script>
 ```
 
 ---
@@ -72,19 +72,19 @@ jsPAPI is namespaced under the global `jsPAPI`.
 To start using the API you will need to create an instance of the jsPAPI class and pass it configuration for your API Server. This can be accomplished by either editing your config.js file, or passing parameters to the instance when you create it:
 
 ``` Javascript
-    // Most configuration options have reasonable defaults
-    // The below example shows the essential params you need
-    // to set which are specific to your organization
-    var config = {
-        accessid: 'your-web-app',
-        key: 'W3CV1V1H-GBUC-3E3P-QP42-1M9CODN0LHVU',
-        orgid: '1',
-        server: 'catalog.midcolumbialibraries.org',
-        domain: 'MCL-LIB',
-    };
+  // Most configuration options have reasonable defaults
+  // The below example shows the essential params you need
+  // to set which are specific to your organization
+  let config = {
+    accessid: 'your-web-app',
+    key: 'W3CV1V1H-GBUC-3E3P-QP42-1M9CODN0LHVU',
+    orgid: '1',
+    server: 'catalog.midcolumbialibraries.org',
+    domain: 'MCL-LIB',
+  };
 
-    // Initialize an API instance with the config
-    var myApi = new Papi(config);
+  // Initialize an API instance with the config
+  let myApi = new jsPAPI(config);
 ```
 
 ---
