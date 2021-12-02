@@ -21,7 +21,9 @@ JsPAPI2 currently implements bib and catalog related public methods of the Polar
 
 ## <a name="docs"></a>Documentation
 
-Developer documentation of public methods is available in `./docs` or [online](https://mid-columbia-libraries.github.io/jspapi2/):
+Developer documentation of public methods is available in `./docs` or [online](https://mid-columbia-libraries.github.io/jspapi2/)
+
+You should also familiarize yourself with the official Polaris API documentation, available at the [Polaris Developer Network](http://developer.polarislibrary.com/documentation.aspx)
 
 ---
 
